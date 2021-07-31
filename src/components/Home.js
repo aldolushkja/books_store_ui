@@ -1,14 +1,16 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import Loading from "./../images/loading.gif";
+import HomeBg from "./../images/home.jpg";
+
 export default class Home extends Component {
-  state = { status: {}, isLoaded: false, error: null };
+  state = {status: {}, isLoaded: false, error: null};
 
   componentDidMount() {
     console.log("componentDidMount::Home");
     fetch("http://localhost:8080/api/v1/status")
-      .then((response) => {
-        if (response.status !== 200) {
-          let err = Error;
+        .then((response) => {
+          if (response.status !== 200) {
+            let err = Error;
           err.message =
             "Server response with invalid status code!" + response.status;
           this.setState({
@@ -48,8 +50,8 @@ export default class Home extends Component {
                 <span
                   className={
                     status.status === "Available"
-                      ? "badge bg-success"
-                      : "badge bg-danger"
+                        ? "badge bg-success"
+                        : "badge bg-danger"
                   }
                 >
                   {status.status}
@@ -57,6 +59,7 @@ export default class Home extends Component {
               </li>
               <li className="list-group-item  align-items-center flex-fill"></li>
             </ul>
+            <img src={HomeBg} alt="home-logo" width="800" height="400"/>;
           </div>
         </Fragment>
       );
