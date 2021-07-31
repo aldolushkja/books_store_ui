@@ -2,9 +2,11 @@ import React, {Component} from "react";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import Books from "./components/Books";
 import Authors from "./components/Authors";
+import Genres from "./components/Genres";
 import Home from "./components/Home";
 import OneBook from "./components/OneBook";
 import OneAuthor from "./components/OneAuthor";
+import OneGenre from "./components/OneGenre";
 
 
 export default class App extends Component {
@@ -60,6 +62,7 @@ export default class App extends Component {
                                 </Route>
                                 <Route path="/book/:book_id" component={OneBook}/>
                                 <Route path="/author/:author_id" component={OneAuthor}/>
+                                <Route path="/genre/:genre_id" component={OneGenre}/>
                                 <Route path="/authors">
                                     <Authors/>
                                 </Route>
@@ -74,9 +77,4 @@ export default class App extends Component {
             </Router>
         );
     }
-}
-
-
-function Genres() {
-    return <h2>Genres</h2>;
 }

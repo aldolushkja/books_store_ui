@@ -6,7 +6,7 @@ export default class Books extends Component {
     state = {authors: [], isLoaded: false, error: null};
 
     componentDidMount() {
-        console.log("componentDidMount::Books");
+        console.log("componentDidMount::Authors");
         fetch("http://localhost:8080/api/v1/authors")
             .then((response) => {
                 if (response.status !== 200) {

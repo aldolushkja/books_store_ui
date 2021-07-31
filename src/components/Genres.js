@@ -1,17 +1,13 @@
 import React, {Component, Fragment} from "react";
-import Loading from "./../images/loading.gif";
 import {Link} from "react-router-dom";
+import Loading from "./../images/loading.gif";
 
-export default class OneAuthor extends Component {
-    state = {books: [], isLoaded: false, error: null};
-
-    constructor(props) {
-        super(props);
-    }
+export default class Books extends Component {
+    state = {genres: [], isLoaded: false, error: null};
 
     componentDidMount() {
-        console.log("componentDidMount::OneAuthor");
-        fetch("http://localhost:8080/api/v1/books/by-author/" + this.props.match.params.author_id)
+        console.log("componentDidMount::Genres");
+        fetch("http://localhost:8080/api/v1/genres")
             .then((response) => {
                 if (response.status !== 200) {
                     let err = Error;
@@ -24,10 +20,9 @@ export default class OneAuthor extends Component {
                 }
             })
             .then((json) => {
-                console.log(json);
                 setTimeout(() => {
                     this.setState({
-                        books: json,
+                        genres: json,
                         isLoaded: true,
                     });
                 }, 3000);
@@ -35,7 +30,7 @@ export default class OneAuthor extends Component {
     }
 
     render() {
-        const {books, isLoaded, error} = this.state;
+        const {genres, isLoaded, error} = this.state;
         if (error) {
             return <div className="bg bg-danger">Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -43,15 +38,15 @@ export default class OneAuthor extends Component {
         } else {
             return (
                 <Fragment>
-                    <h2>All Books having author: {books[0].authorName}</h2>
+                    <h2>Choose a genre!</h2>
                     <div className="list-group">
-                        {books.map((c) => (
+                        {genres.map((c) => (
                             <Link
                                 key={c.id}
-                                to={`/book/${c.id}`}
+                                to={`/genre/${c.id}`}
                                 className="list-group-item list-group-item-action"
                             >
-                                {c.title}
+                                {c.name}
                             </Link>
                         ))}
                     </div>

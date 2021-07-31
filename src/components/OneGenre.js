@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import Loading from "./../images/loading.gif";
 import {Link} from "react-router-dom";
 
-export default class OneAuthor extends Component {
+export default class OneGenre extends Component {
     state = {books: [], isLoaded: false, error: null};
 
     constructor(props) {
@@ -10,8 +10,8 @@ export default class OneAuthor extends Component {
     }
 
     componentDidMount() {
-        console.log("componentDidMount::OneAuthor");
-        fetch("http://localhost:8080/api/v1/books/by-author/" + this.props.match.params.author_id)
+        console.log("componentDidMount::OneGenre");
+        fetch("http://localhost:8080/api/v1/books/by-genre/" + this.props.match.params.genre_id)
             .then((response) => {
                 if (response.status !== 200) {
                     let err = Error;
@@ -43,7 +43,7 @@ export default class OneAuthor extends Component {
         } else {
             return (
                 <Fragment>
-                    <h2>All Books having author: {books[0].authorName}</h2>
+                    <h2>All Books having genre: {books[0].genreName}</h2>
                     <div className="list-group">
                         {books.map((c) => (
                             <Link

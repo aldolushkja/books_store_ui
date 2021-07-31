@@ -44,9 +44,9 @@ export default class OneBook extends Component {
                 <Fragment>
                     <h2>Book: {book.title}</h2>
                     <div className="float-start">
-                        <small>Rating: </small>
+                        <small>Rating </small>
                         {Array(book.rating).fill(null).map((x, i) => (
-                            <i className="bi bi-star-fill" key={i}/>
+                            <i className="bi bi-star-fill" key={i} style={{color: 'orange'}}/>
                         ))}
                     </div>
                     <div className="float-end">
