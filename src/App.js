@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import OneBook from "./components/OneBook";
 import OneAuthor from "./components/OneAuthor";
 import OneGenre from "./components/OneGenre";
+import EditBook from "./components/EditBook";
 
 
 export default class App extends Component {
@@ -43,10 +44,10 @@ export default class App extends Component {
                                     </li>
 
                                     <li className="list-group-item">
-                                        <Link to="/admin/books">Add a book</Link>
+                                        <Link to="/admin/add-book/0">Add a book</Link>
                                     </li>
                                     <li className="list-group-item">
-                                        <Link to="/admin/catalogue">Manage Catalogue</Link>
+                                        <Link to="/admin/books">Manage Catalogue</Link>
                                     </li>
                                 </ul>
                             </nav>
@@ -69,6 +70,8 @@ export default class App extends Component {
                                 <Route path="/genres">
                                     <Genres/>
                                 </Route>
+
+                                <Route path="/admin/add-book/:id" component={EditBook}/>
 
                             </Switch>
                         </div>
