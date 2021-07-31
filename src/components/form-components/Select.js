@@ -11,7 +11,7 @@ const Select = (props) => {
                     onChange={props.handleChange}>
                 <option className="form-select" value="">{props.placeholder}</option>
 
-                {props.mpaaOptions.map((m, index) => (
+                {props.options.map((m, index) => (
                     <option key={index} className="form-select" value={m.id}>{m.value}</option>
                 ))}
             </select>
