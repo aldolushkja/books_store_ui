@@ -59,7 +59,7 @@ export default class Home extends Component {
               </li>
               <li className="list-group-item  align-items-center flex-fill"></li>
             </ul>
-            <img src={HomeBg} alt="home-logo" width="800" height="400"/>;
+            <img src={HomeBg} alt="home-logo" width="800" height="400"/>
           </div>
         </Fragment>
       );

@@ -1,5 +1,6 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import Books from "./components/Books";
 import Authors from "./components/Authors";
 import Genres from "./components/Genres";
@@ -14,16 +15,30 @@ import Login from "./components/Login";
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {jwt: ""};
+        this.state = {jwt: "", isAdmin: false, isUser: false, isGuest: true};
         this.handleJWTChange(this.handleJWTChange.bind(this));
+        // this.handleUserProfile(this.handleUserProfile.bind(this));
+    }
+
+    handleUserProfile = () => {
+        if (this.state.jwt !== "") {
+            let decode = jwt_decode(this.state.jwt);
+            this.setState({
+                isAdmin: decode.groups.includes("ADMIN"),
+                isUser: decode.groups.includes("USER"),
+            })
+        } else {
+            this.setState({isAdmin: false, isUser: false, isGuest: true});
+        }
     }
 
     handleJWTChange = (jwt) => {
         this.setState({jwt: jwt});
+        this.handleUserProfile();
     };
 
     logout = () => {
-        this.setState({jwt: ""});
+        this.setState({jwt: "", isAdmin: false, isUser: false, isGuest: true});
         window.localStorage.removeItem("jwt");
     };
 
@@ -31,7 +46,7 @@ export default class App extends Component {
         let token = window.localStorage.getItem("jwt");
         if (token) {
             if (this.state.jwt === "") {
-                this.setState({jwt: JSON.parse(token)});
+                this.setState({jwt: token});
             }
         }
     }
@@ -78,12 +93,22 @@ export default class App extends Component {
                                         <Link to="/genres">Genres</Link>
                                     </li>
 
-                                    <li className="list-group-item">
-                                        <Link to="/admin/add-book/0">Add a book</Link>
-                                    </li>
-                                    <li className="list-group-item">
-                                        <Link to="/admin/books">Manage Catalogue</Link>
-                                    </li>
+                                    {
+                                        this.state.jwt !== "" && (
+                                            <Fragment>
+                                                <li className="list-group-item">
+                                                    <Link to="/admin/add-book/0">Add a book</Link>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <Link to="/admin/books">Manage Catalogue</Link>
+                                                </li>
+                                            </Fragment>
+                                        )
+                                    }
+
+                                    <pre>{JSON.stringify(this.state)}</pre>
+
+
                                 </ul>
                             </nav>
                         </div>

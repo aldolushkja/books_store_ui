@@ -76,12 +76,13 @@ export default class Login extends Component {
                 }
             })
             .then((data) => {
-                console.log(data);
+                console.log(data.token);
                 this.handleJWTChange(data.token);
                 window.localStorage.setItem(
                     "jwt",
-                    JSON.stringify(Object.values(data)[0])
-                );
+                    data.token
+                )
+                ;
                 this.props.history.push({
                     pathname: "/",
                 });
