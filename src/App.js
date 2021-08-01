@@ -8,19 +8,54 @@ import OneBook from "./components/OneBook";
 import OneAuthor from "./components/OneAuthor";
 import OneGenre from "./components/OneGenre";
 import EditBook from "./components/EditBook";
+import Login from "./components/Login";
 
 
 export default class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {jwt: ""};
+        this.handleJWTChange(this.handleJWTChange.bind(this));
+    }
+
+    handleJWTChange = (jwt) => {
+        this.setState({jwt: jwt});
+    };
+
+    logout = () => {
+        this.setState({jwt: ""});
+        window.localStorage.removeItem("jwt");
+    };
+
+    componentDidMount() {
+        let token = window.localStorage.getItem("jwt");
+        if (token) {
+            if (this.state.jwt === "") {
+                this.setState({jwt: JSON.parse(token)});
+            }
+        }
+    }
 
     render() {
+        let loginLink;
+        if (this.state.jwt === "") {
+            loginLink = <Link to="/login">Login</Link>;
+        } else {
+            loginLink = (
+                <Link to="/logout" onClick={this.logout}>
+                    Logout
+                </Link>
+            );
+        }
         return (
             <Router>
                 <div className="container">
                     <div className="row">
                         <div className="col mt-3">
-                            <h1>Books Store</h1>
-                            <hr className="mb-3"/>
+                            <h1 className="mt-3">Books Store</h1>
                         </div>
+                        <div className="col mt-3 text-end">{loginLink}</div>
+                        <hr className="mb-3"/>
                     </div>
 
                     <div className="row">
@@ -54,7 +89,13 @@ export default class App extends Component {
                         </div>
                         <div className="col-md-10">
                             <Switch>
-
+                                <Route
+                                    exact
+                                    path="/login"
+                                    component={(props) => (
+                                        <Login {...props} handleJWTChange={this.handleJWTChange}/>
+                                    )}
+                                />
                                 <Route exact path="/">
                                     <Home/>
                                 </Route>
