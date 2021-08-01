@@ -77,24 +77,34 @@ export default class App extends Component {
                         <div className="col-md-2">
                             <nav>
                                 <ul className="list-group">
-                                    <li className="list-group-item">
-                                        <Link to="/">Home</Link>
-                                    </li>
-                                    <li className="list-group-item">
-                                        <Link to="/books">Books</Link>
-                                    </li>
-
-
-                                    <li className="list-group-item">
-                                        <Link to="/authors">Authors</Link>
-                                    </li>
-
-                                    <li className="list-group-item">
-                                        <Link to="/genres">Genres</Link>
-                                    </li>
 
                                     {
-                                        this.state.jwt !== "" && (
+                                        this.state.isGuest && (
+                                            <Fragment>
+                                                <li className="list-group-item">
+                                                    <Link to="/">Home</Link>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <Link to="/books">Books</Link>
+                                                </li>
+                                            </Fragment>
+                                        )
+                                    }
+                                    {
+                                        (this.state.isUser || this.state.isAdmin) && (
+                                            <Fragment>
+                                                <li className="list-group-item">
+                                                    <Link to="/authors">Authors</Link>
+                                                </li>
+
+                                                <li className="list-group-item">
+                                                    <Link to="/genres">Genres</Link>
+                                                </li>
+                                            </Fragment>
+                                        )
+                                    }
+                                    {
+                                        this.state.isAdmin && (
                                             <Fragment>
                                                 <li className="list-group-item">
                                                     <Link to="/admin/add-book/0">Add a book</Link>
@@ -105,10 +115,6 @@ export default class App extends Component {
                                             </Fragment>
                                         )
                                     }
-
-                                    <pre>{JSON.stringify(this.state)}</pre>
-
-
                                 </ul>
                             </nav>
                         </div>
