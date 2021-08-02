@@ -137,7 +137,10 @@ export default class App extends Component {
                                     <Books/>
                                 </Route>
                                 <Route path="/book/:book_id" component={OneBook}/>
-                                <Route path="/author/:author_id" component={OneAuthor}/>
+                                <Route path="/author/:author_id" component={(props) => (
+                                    <OneAuthor {...props} jwt={this.state.jwt} isUser={this.state.profileInfo.isUser}
+                                               isAdmin={this.state.profileInfo.isAdmin}/>
+                                )}/>
                                 <Route path="/genre/:genre_id" component={OneGenre}/>
                                 <Route path="/authors" component={(props) => (
                                     <Authors {...props} jwt={this.state.jwt} isUser={this.state.profileInfo.isUser}

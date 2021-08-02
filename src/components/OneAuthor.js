@@ -11,7 +11,27 @@ export default class OneAuthor extends Component {
 
     componentDidMount() {
         console.log("componentDidMount::OneAuthor");
-        fetch("http://localhost:8080/api/v1/books/by-author/" + this.props.match.params.author_id)
+        if (this.props.jwt === "") {
+            this.props.history.push({
+                pathname: "/login",
+            });
+        }
+        if (this.props.isAdmin === false) {
+            if (this.props.isUser === false) {
+                console.log("componentDidMount::OneAuthor::userNOTAuthorized")
+                this.props.history.push({
+                    pathname: "/login",
+                });
+            }
+            console.log("componentDidMount::OneAuthor::userAuthorized")
+        }
+        const requestOptions = {
+            headers: {
+                "Authorization": "Bearer " + this.props.jwt,
+            }
+        }
+
+        fetch("http://localhost:8080/api/v1/books/by-author/" + this.props.match.params.author_id, requestOptions)
             .then((response) => {
                 if (response.status !== 200) {
                     let err = Error;
