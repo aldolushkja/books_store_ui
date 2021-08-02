@@ -15,7 +15,7 @@ import Login from "./components/Login";
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {jwt: "", isAdmin: false, isUser: false, isGuest: true};
+        this.state = {jwt: "", profileInfo: {isAdmin: false, isUser: false, isGuest: true}};
         this.handleJWTChange(this.handleJWTChange.bind(this));
         // this.handleUserProfile(this.handleUserProfile.bind(this));
     }
@@ -24,11 +24,14 @@ export default class App extends Component {
         if (this.state.jwt !== "") {
             let decode = jwt_decode(this.state.jwt);
             this.setState({
-                isAdmin: decode.groups.includes("ADMIN"),
-                isUser: decode.groups.includes("USER"),
+                profileInfo: {
+                    isAdmin: decode.groups.includes("ADMIN"),
+                    isUser: decode.groups.includes("USER"),
+                    isGuest: true
+                },
             })
         } else {
-            this.setState({isAdmin: false, isUser: false, isGuest: true});
+            this.setState({profileInfo: {isAdmin: false, isUser: false, isGuest: true}});
         }
     }
 
@@ -38,7 +41,7 @@ export default class App extends Component {
     };
 
     logout = () => {
-        this.setState({jwt: "", isAdmin: false, isUser: false, isGuest: true});
+        this.setState({jwt: "", profileInfo: {isAdmin: false, isUser: false, isGuest: true}});
         window.localStorage.removeItem("jwt");
     };
 
@@ -79,7 +82,7 @@ export default class App extends Component {
                                 <ul className="list-group">
 
                                     {
-                                        this.state.isGuest && (
+                                        this.state.profileInfo.isGuest && (
                                             <Fragment>
                                                 <li className="list-group-item">
                                                     <Link to="/">Home</Link>
@@ -91,7 +94,7 @@ export default class App extends Component {
                                         )
                                     }
                                     {
-                                        (this.state.isUser || this.state.isAdmin) && (
+                                        (this.state.profileInfo.isUser || this.state.profileInfo.isAdmin) && (
                                             <Fragment>
                                                 <li className="list-group-item">
                                                     <Link to="/authors">Authors</Link>
@@ -104,7 +107,7 @@ export default class App extends Component {
                                         )
                                     }
                                     {
-                                        this.state.isAdmin && (
+                                        this.state.profileInfo.isAdmin && (
                                             <Fragment>
                                                 <li className="list-group-item">
                                                     <Link to="/admin/add-book/0">Add a book</Link>
@@ -136,9 +139,10 @@ export default class App extends Component {
                                 <Route path="/book/:book_id" component={OneBook}/>
                                 <Route path="/author/:author_id" component={OneAuthor}/>
                                 <Route path="/genre/:genre_id" component={OneGenre}/>
-                                <Route path="/authors">
-                                    <Authors/>
-                                </Route>
+                                <Route path="/authors" component={(props) => (
+                                    <Authors {...props} jwt={this.state.jwt} isUser={this.state.profileInfo.isUser}
+                                             isAdmin={this.state.profileInfo.isAdmin}/>
+                                )}/>
                                 <Route path="/genres">
                                     <Genres/>
                                 </Route>
@@ -146,6 +150,8 @@ export default class App extends Component {
                                 <Route path="/admin/add-book/:id" component={EditBook}/>
 
                             </Switch>
+                            <pre>{JSON.stringify(this.state)}</pre>
+
                         </div>
                     </div>
                 </div>
